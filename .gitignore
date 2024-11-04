@@ -1,0 +1,21 @@
+# Node Modules (for React)
+client/node_modules/
+
+# Build files (for React)
+client/build/
+
+# Environment variables
+.env
+client/.env
+
+# Python-related files and virtual environment (for Flask)
+__pycache__/
+*.py[cod]
+*.sqlite3
+venv/
+
+# MacOS system files
+.DS_Store
+
+# Logs
+*.log

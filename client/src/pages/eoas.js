@@ -5,7 +5,7 @@ function Table1() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/table1')
+    axios.get('/api/EOAs')
       .then(response => setData(response.data))
       .catch(error => console.error("Error fetching table data:", error));
   }, []);

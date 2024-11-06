@@ -35,6 +35,18 @@ def get_eoas_data():
     connection.close()
     return jsonify(data)
 
+@app.route('/api/chains')
+def get_chains_data():
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM chains")
+        data = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        
+        print("Data fetched:", data)  # Debugging line
+        return jsonify(data)
+
 # Add your routes for your tables here
 
 if __name__ == '__main__':

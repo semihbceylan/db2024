@@ -1,14 +1,13 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import eoas from './pages/eoas';
-// Import your table components
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Eoas from './pages/eoas';
 
 function App() {
   return (
     <Router>
-      <Switch>
-        <Route path="/table1" component={eoas} />
-      </Switch>
+      <Routes>
+        <Route path="/table1" element={<Eoas />} />
+      </Routes>
     </Router>
   );
 }

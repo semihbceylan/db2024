@@ -19,3 +19,6 @@ venv/
 
 # Logs
 *.log
+
+envio-fetch/node_modules
+envio-fetch/yarn.lock

@@ -23,13 +23,6 @@ function  NFTs() {
 			<th>token_id</th>
 			<th>token_uri</th>
 			<th>contract_type</th>
-
-			{/*<th>address</th>
-            <th>is_contract</th>
-            <th>eth_balance</th>
-			<th>erc20_count</th>
-			<th>dollar_balance</th>
-			<th>nft_count</th>*/}
           </tr>
         </thead>
         <tbody>

@@ -29,6 +29,7 @@ def index():
     links = {
         "EOAs Data": url_for('get_eoas_data'),
         "Chains Data": url_for('get_chains_data'),
+        "Blocks Data": url_for('get_blocks_data'),
     }
     # HTML template with links to all pages
     html_template = """
@@ -69,6 +70,20 @@ def get_chains_data():
         return jsonify({"error": "Database connection failed"}), 500
     cursor = connection.cursor(dictionary=True)
     cursor.execute("SELECT * FROM chains")
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    
+    print("Data fetched:", data)  # Debugging line
+    return jsonify(data)
+
+@app.route('/api/blocks')
+def get_blocks_data():
+    connection = get_db_connection()
+    if not connection:
+        return jsonify({"error": "Database connection failed"}), 500
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM blocks")
     data = cursor.fetchall()
     cursor.close()
     connection.close()

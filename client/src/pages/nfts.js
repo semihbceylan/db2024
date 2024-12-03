@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function Table1() {
+function  NFTs() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/EOAs')
+    axios.get('/api/NFTs')
       .then(response => setData(response.data))
       .catch(error => console.error("Error fetching table data:", error));
   }, []);
 
   return (
     <div>
-      <h1>EOAs</h1>
+      <h1>NFTs</h1>
       <table>
         <thead>
           <tr>
-            <th>publicKey</th>
-            <th>balance</th>
-            <th>erc20Count</th>
-			<th>erc20Balance</th>
-			<th>nftCount</th>
+            
+		  	<th>address</th>
+            <th>chain_id</th>
+            <th>owner</th>
+			<th>token_id</th>
+			<th>token_uri</th>
+			<th>contract_type</th>
           </tr>
         </thead>
         <tbody>
@@ -37,4 +39,4 @@ function Table1() {
   );
 }
 
-export default Table1;
+export default NFTs;

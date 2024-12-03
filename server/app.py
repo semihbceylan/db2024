@@ -27,7 +27,7 @@ def get_db_connection():
 @app.route('/')
 def index():
     links = {
-        "EOAs Data": url_for('get_eoas_data'),
+        "NFTs Data": url_for('get_nfts_data'),
         "Chains Data": url_for('get_chains_data'),
         "Blocks Data": url_for('get_blocks_data'),
     }
@@ -51,13 +51,13 @@ def index():
     return render_template_string(html_template, links=links)
 
 # Fetches data from EOAs
-@app.route('/api/EOAs')
-def get_eoas_data():
+@app.route('/api/NFTs')
+def get_nfts_data():
     connection = get_db_connection()
     if not connection:
         return jsonify({"error": "Database connection failed"}), 500
     cursor = connection.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM eoas")
+    cursor.execute("SELECT * FROM nfts")
     data = cursor.fetchall()
     cursor.close()
     connection.close()

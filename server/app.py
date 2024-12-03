@@ -2,8 +2,6 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import mysql.connector
 from mysql.connector import Error
-import os
-from dotenv import load_dotenv
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -11,10 +9,10 @@ CORS(app)  # Allow access from all origins
 
 # Database configuration
 DB_CONFIG = {
-    "host": os.getenv("DB_HOST", "localhost"),  # Default to localhost if not set
-    "user": os.getenv("DB_USER", "root"),      # Default to root if not set
-    "password": os.getenv("DB_PASSWORD", ""),  # Default to empty if not set
-    "database": os.getenv("DB_NAME", "test")   # Default to "test" if not set
+    "host": "localhost",  # Change to your database host if it's remote
+    "user": "prokocco_pro2User",
+    "password": "leBronjames1!",
+    "database": "prokocco_pro2"
 }
 
 # Database connection function
@@ -125,7 +123,6 @@ def edit_chain(chain_id):
         if connection.is_connected():
             cursor.close()
             connection.close()
-
 @app.route("/blocks", methods=["GET"])
 def blocks():
     """Fetch all blocks from the database."""
@@ -218,6 +215,6 @@ def edit_block(chain_id):
         if connection.is_connected():
             cursor.close()
             connection.close()
-
+            
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5001)

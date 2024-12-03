@@ -1,5 +1,4 @@
-# server/app.py
-from flask import Flask, jsonify
+from flask import Flask, jsonify, redirect, url_for, render_template_string
 import mysql.connector
 from mysql.connector import Error
 from dotenv import load_dotenv
@@ -24,10 +23,38 @@ def get_db_connection():
         print("Error while connecting to MySQL", e)
         return None
 
+# Default route with links to all pages
+@app.route('/')
+def index():
+    links = {
+        "EOAs Data": url_for('get_eoas_data'),
+        "Chains Data": url_for('get_chains_data'),
+    }
+    # HTML template with links to all pages
+    html_template = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>API Navigation</title>
+    </head>
+    <body>
+        <h1>Welcome to the API</h1>
+        <ul>
+        {% for name, link in links.items() %}
+            <li><a href="{{ link }}">{{ name }}</a></li>
+        {% endfor %}
+        </ul>
+    </body>
+    </html>
+    """
+    return render_template_string(html_template, links=links)
+
 # Fetches data from EOAs
 @app.route('/api/EOAs')
 def get_eoas_data():
     connection = get_db_connection()
+    if not connection:
+        return jsonify({"error": "Database connection failed"}), 500
     cursor = connection.cursor(dictionary=True)
     cursor.execute("SELECT * FROM eoas")
     data = cursor.fetchall()
@@ -37,17 +64,22 @@ def get_eoas_data():
 
 @app.route('/api/chains')
 def get_chains_data():
-        connection = get_db_connection()
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM chains")
-        data = cursor.fetchall()
-        cursor.close()
-        connection.close()
-        
-        print("Data fetched:", data)  # Debugging line
-        return jsonify(data)
+    connection = get_db_connection()
+    if not connection:
+        return jsonify({"error": "Database connection failed"}), 500
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM chains")
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    
+    print("Data fetched:", data)  # Debugging line
+    return jsonify(data)
 
-# Add your routes for your tables here
+# Handle 404 errors
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({"error": "Page not found"}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)

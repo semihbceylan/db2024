@@ -46,17 +46,22 @@ const addressSet = new Set();
         }
     } // console.log(blocks); console.log(transactions); console.log(addressSet);
 
-    for (let i = 0; i < chainIDs.length; i++) { const _chainID = chainIDs[i]; const _provider = providers[i];
-            const _chain = EvmChain.create(_chainID); for (let _address of addressSet) {
-            const _isContract = false; /*(await _provider.getCode(_address)) !== "0x";*/
-            const _ethBalance = (await Moralis.EvmApi.balance.getNativeBalance({address: _address, chain: _chain})).toJSON().balance / (10**18);
-            const _erc20s = (await Moralis.EvmApi.wallets.getWalletTokenBalancesPrice({address: _address, chain: _chain})).result;
-            const _dollarBalance = _erc20s.reduce((acc, token) => acc + token.usdValue, 0);
-            const _erc20Count = _erc20s.length;
-            const _nfts = (await Moralis.EvmApi.nft.getWalletNFTs({address: _address, chain: _chain})).result;
-            const _nftCount = _nfts.length;
+    for (let _address of addressSet) {
+        let isContract = false; let ethBalance = 0; let erc20Count = 0; let dollarBalance = 0; let nftCount = 0;
+        for (let i = 0; i < chainIDs.length; i++) { const _chainID = chainIDs[i]; const _provider = providers[i];
+            const _chain = EvmChain.create(_chainID);
+
+            // isContract = (isContract) ? true : (await _provider.getCode(_address)) !== "0x";
             
-            if (_nftCount > 0) {
+            const _erc20s = (await Moralis.EvmApi.wallets.getWalletTokenBalancesPrice({address: _address, chain: _chain})).result;
+            const _nfts = (await Moralis.EvmApi.nft.getWalletNFTs({address: _address, chain: _chain})).result;
+            
+            ethBalance += (await Moralis.EvmApi.balance.getNativeBalance({address: _address, chain: _chain})).toJSON().balance / (10**18);
+            dollarBalance += _erc20s.reduce((acc, token) => acc + token.usdValue, 0);
+            erc20Count += _erc20s.length;
+            nftCount = _nfts.length;
+            
+            if (nftCount > 0) {
                 for (const _nft of _nfts) {
                     let _tokenUri = null;
                     if (_nft.tokenUri?.slice(0, 34) == "https://ipfs.moralis.io:2053/ipfs/") {
@@ -65,10 +70,10 @@ const addressSet = new Set();
                     }
                 }
             }
-
-            addresses.push([_address, _isContract, _ethBalance, _erc20Count, _dollarBalance, _nftCount]);
         }
-    } // console.log(addresses);
+
+        addresses.push([_address, isContract, ethBalance, erc20Count, dollarBalance, nftCount]);
+    } // console.log(addresses); console.log(nfts);
 
     dump(chains, "chains");
     dump(blocks, "blocks");

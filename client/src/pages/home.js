@@ -32,6 +32,19 @@ function Home() {
           }}
         >
           Eoas Table
+        </Link>        
+        <Link
+          to="/transactions/245121"
+          style={{
+            textDecoration: 'none',
+            padding: '10px 20px',
+            backgroundColor: '#007BFF',
+            color: 'white',
+            borderRadius: '5px',
+            fontWeight: 'bold',
+          }}
+        >
+          /transactions/245121
         </Link>
       </div>
     </div>

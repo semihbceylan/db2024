@@ -10,9 +10,9 @@ CORS(app)  # Allow access from all origins
 # Database configuration
 DB_CONFIG = {
     "host": "localhost",  # Change to your database host if it's remote
-    "user": "prokocco_pro2User",
-    "password": "leBronjames1!",
-    "database": "prokocco_pro2"
+    "user": "root",
+    "password": "yusa5444",
+    "database": "dbsystems"
 }
 
 # Database connection function
@@ -215,6 +215,109 @@ def edit_block(chain_id):
         if connection.is_connected():
             cursor.close()
             connection.close()
+
+@app.route("/addresses", methods=["GET"])
+def get_addresses():
+    """Fetch all addresses from the database."""
+    connection = get_db_connection()
+    if not connection:
+        return jsonify({"error": "Database connection failed"}), 500
+
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM addresses")
+        data = cursor.fetchall()
+        return jsonify(data)
+    except Error as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+
+
+@app.route("/addresses", methods=["POST"])
+def add_address():
+    """Add a new address to the database."""
+    data = request.json
+    required_fields = ["address", "is_contract", "eth_balance", "erc20_count", "dollar_balance", "nft_count"]
+
+    if not all(field in data for field in required_fields):
+        return jsonify({"error": "Missing required fields"}), 400
+
+    connection = get_db_connection()
+    if not connection:
+        return jsonify({"error": "Database connection failed"}), 500
+
+    try:
+        cursor = connection.cursor()
+        query = """INSERT INTO addresses (address, is_contract, eth_balance, erc20_count, dollar_balance, nft_count)
+                   VALUES (%s, %s, %s, %s, %s, %s)"""
+        values = (data["address"], data["is_contract"], data["eth_balance"], data["erc20_count"], data["dollar_balance"], data["nft_count"])
+        cursor.execute(query, values)
+        connection.commit()
+        return jsonify({"success": True, "message": "Address added successfully"}), 201
+    except Error as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+
+
+@app.route("/addresses/<string:address>", methods=["DELETE"])
+def delete_address(address):
+    """Delete an address by its address value."""
+    connection = get_db_connection()
+    if not connection:
+        return jsonify({"error": "Database connection failed"}), 500
+
+    try:
+        cursor = connection.cursor()
+        query = "DELETE FROM addresses WHERE address = %s"
+        cursor.execute(query, (address,))
+        connection.commit()
+        return jsonify({"success": True, "message": "Address deleted successfully"}), 200
+    except Error as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+
+
+@app.route("/addresses/<string:address>", methods=["PUT"])
+def edit_address(address):
+    """Edit an address by its address value."""
+    data = request.json
+    required_fields = ["is_contract", "eth_balance", "erc20_count", "dollar_balance", "nft_count"]
+
+    if not all(field in data for field in required_fields):
+        return jsonify({"error": "Missing required fields"}), 400
+
+    connection = get_db_connection()
+    if not connection:
+        return jsonify({"error": "Database connection failed"}), 500
+
+    try:
+        cursor = connection.cursor()
+        query = """UPDATE addresses 
+                   SET is_contract = %s, eth_balance = %s, erc20_count = %s, dollar_balance = %s, nft_count = %s
+                   WHERE address = %s"""
+        values = (data["is_contract"], data["eth_balance"], data["erc20_count"], data["dollar_balance"], data["nft_count"], address)
+        cursor.execute(query, values)
+        connection.commit()
+        return jsonify({"success": True, "message": "Address updated successfully"}), 200
+    except Error as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+
             
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5001)
+
+
+    

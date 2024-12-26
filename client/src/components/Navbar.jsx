@@ -15,11 +15,11 @@ const Navbar = () => {
 				</NavLink>
 				<div className="navbar-links">
 					<NavLink to="/nfts" className={({ isActive }) => isActive ? 'nav-link active-link' : 'nav-link'} >
-                        <img src={nftIcon} alt="NFT Icon" className="nft-icon" />
+                        <div className="nft-icon-frame"><img src={nftIcon} alt="NFT Icon" className="nft-icon" /></div>
                         NFT Page
                     </NavLink>
                     <NavLink to="/blocks" className={({ isActive }) => isActive ? 'nav-link active-link' : 'nav-link'}>
-                        <img src={blockIcon} alt="Block Icon" className="block-icon" />
+						<div className="nft-icon-frame"><img src={blockIcon} alt="Block Icon" className="block-icon" /></div>
                         Blocks Page
                     </NavLink>
 				</div>

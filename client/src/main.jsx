@@ -2,10 +2,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
 import { StrictMode } from 'react'
 
-import TableRoute from './pages/tableRoute'
-import Admin from './pages/admin'
-import Home from './pages/home'
-import NFTs from './pages/nfts'
+import TableRoute from './pages/TableRoute'
+import Admin from './pages/Admin'
+import Home from './pages/Home'
+import NFTs from './pages/NFTs'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

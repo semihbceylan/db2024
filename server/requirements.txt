@@ -1,3 +1,5 @@
 Flask
 mysql-connector-python
 python-dotenv
+mysql.connector
+flask_cors

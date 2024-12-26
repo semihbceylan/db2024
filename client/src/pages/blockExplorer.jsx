@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-export default function Table () {
+export default function BlockExplorer () {
     const { tableName, primaryKey } = useParams();
 
     const [data, setData] = useState(null);

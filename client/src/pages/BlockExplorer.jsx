@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
+import '../styles/index.css';
 
 const TEST_DATA = {
     tableName: "blocks",
@@ -28,16 +29,22 @@ export default function BlockExplorer () {
         })();
     }, [primaryKey]);
     
-    return (data != null) ? (
-        <>
-            <Navbar />
-            <div>
-                <ul>
-                    {Object.entries(data).map(([key, value]) => (
-                    <li key={key}><strong>{key}:</strong> {value.toString()}</li>
-                    ))}
-                </ul>
-            </div>
-        </>
-    ) : (<><h1>Loading..</h1></>);
+    return data != null ? (
+			<>
+				<Navbar />
+				<div className="page-content">
+					<ul>
+						{Object.entries(data).map(([key, value]) => (
+							<li key={key}>
+								<strong>{key}:</strong> {value.toString()}
+							</li>
+						))}
+					</ul>
+				</div>
+			</>
+		) : (
+			<>
+				<h1>Loading..</h1>
+			</>
+		);
 }

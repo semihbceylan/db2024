@@ -1,13 +1,4 @@
 /* Navbar Styles */
-body {
-  margin: 0;
-  padding: 0;
-}
-
-.page-content {
-  margin-top: 80px; /* Match the navbar height */
-}
-
 .navbar {
   position: fixed;
   top: 0;

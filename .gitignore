@@ -1,24 +1,6 @@
-# Node Modules (for React)
-client/node_modules/
+*/node_modules
+*/yarn.lock
+*/package-lock.json
 
-# Build files (for React)
-client/build/
-
-# Environment variables
-.env
-client/.env
-
-# Python-related files and virtual environment (for Flask)
-__pycache__/
-*.py[cod]
-*.sqlite3
-venv/
-
-# MacOS system files
-.DS_Store
-
-# Logs
-*.log
-
-envio-fetch/node_modules
-envio-fetch/yarn.lock
+*/__pycache__
+*/.env

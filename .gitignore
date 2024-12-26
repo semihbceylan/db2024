@@ -2,6 +2,7 @@
 */yarn.lock
 */package-lock.json
 
+*/*/__pycache__
 */__pycache__
 */.env
 */.DS_Store

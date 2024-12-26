@@ -14,18 +14,14 @@ const Navbar = () => {
 					<span className="project-name">DataBees</span>
 				</NavLink>
 				<div className="navbar-links">
-					<NavLink to="/nft" className="nav-link" activeclassname="active-link">
-						<img src={nftIcon} alt="NFT Icon" className="nft-icon" />
-						NFT Page
-					</NavLink>
-					<NavLink
-						to="/blocks"
-						className="nav-link"
-						activeclassname="active-link"
-					>
-						<img src={blockIcon} alt="Block Icon" className="block-icon" />
-						Blocks Page
-					</NavLink>
+					<NavLink to="/nfts" className={({ isActive }) => isActive ? 'nav-link active-link' : 'nav-link'} >
+                        <img src={nftIcon} alt="NFT Icon" className="nft-icon" />
+                        NFT Page
+                    </NavLink>
+                    <NavLink to="/blocks" className={({ isActive }) => isActive ? 'nav-link active-link' : 'nav-link'}>
+                        <img src={blockIcon} alt="Block Icon" className="block-icon" />
+                        Blocks Page
+                    </NavLink>
 				</div>
 			</div>
 		</nav>

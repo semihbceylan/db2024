@@ -1,0 +1,99 @@
+/* Navbar Styles */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(90deg, #0f2027, #203a43, #2c5364); /* Futuristic gradient */
+  padding: 0.8rem 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem; /* Space between logo and name */
+  text-decoration: none;
+}
+
+.logo-image {
+  height: 50px;
+  width: auto;
+  transition: transform 0.3s ease-in-out;
+}
+
+.project-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.logo-container:hover .project-name,
+.logo-container:hover .logo-image {
+  transform: scale(1.1);
+  color: #4fd1c5;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-link {
+  color: #e2e8f0; /* Light gray text */
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 600;
+  position: relative;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+  color: #4fd1c5; /* Aqua color on hover */
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background: #4fd1c5; /* Aqua underline */
+  transition: width 0.3s ease-in-out;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.active-link {
+  color: #00d1b2; /* Bright green/aqua for active state */
+  font-weight: 700;
+}
+
+.active-link::after {
+  content: '';
+  position: absolute;
+  width: 100%; /* Full underline for active link */
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background: #00d1b2; /* Matches active link color */
+  transition: width 0.3s ease-in-out;
+}

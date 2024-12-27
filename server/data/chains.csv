@@ -1,0 +1,6 @@
+chain_id,chain_name,native_currency,explorer_url,rpc_url
+1,Ethereum Mainnet,ETH,https://etherscan.io,https://cloudflare-eth.com
+10,OP Mainnet,ETH,https://optimistic.etherscan.io,https://mainnet.optimism.io
+100,Gnosis,XDAI,https://gnosisscan.io,https://rpc.gnosischain.com
+137,Polygon Mainnet,MATIC,https://polygonscan.com,https://polygon-rpc.com/
+8453,Base,ETH,https://basescan.org,https://mainnet.base.org/

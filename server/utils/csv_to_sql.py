@@ -16,6 +16,74 @@ DB_CONFIG = {
 connection = mysql.connector.connect(**DB_CONFIG)
 cursor = connection.cursor()
 
+cursor.execute("DROP TABLE IF EXISTS addresses")
+cursor.execute("DROP TABLE IF EXISTS blocks")
+cursor.execute("DROP TABLE IF EXISTS chains")
+cursor.execute("DROP TABLE IF EXISTS nfts")
+cursor.execute("DROP TABLE IF EXISTS transactions")
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS addresses (
+        address VARCHAR(42),
+        is_contract TINYINT(1),
+        eth_balance DECIMAL(30,18),
+        erc20_count INT,
+        dollar_balance DECIMAL(30,8),
+        nft_count INT,
+        PRIMARY KEY (address)
+    )
+""")
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS blocks (
+        chain_id INT,
+        block_number INT,
+        block_hash VARCHAR(66),
+        parent_hash VARCHAR(66),
+        miner VARCHAR(42),
+        transaction_count INT,
+        timestamp DATETIME,
+        PRIMARY KEY (chain_id, block_number)
+    )
+""")
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS chains (
+        chain_id INT,
+        chain_name VARCHAR(50),
+        native_currency VARCHAR(10),
+        explorer_url VARCHAR(255),
+        rpc_url VARCHAR(255),
+        PRIMARY KEY (chain_id)
+    )
+""")
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS nfts (
+        address VARCHAR(42),
+        token_id BIGINT,
+        chain_id INT,
+        owner VARCHAR(42),
+        token_uri TEXT,
+        contract_type VARCHAR(10),
+        PRIMARY KEY (address, token_id)
+    )           
+""")
+
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS transactions (
+        tx_hash VARCHAR(66),
+        from_address VARCHAR(42),
+        to_address VARCHAR(42),
+        block_number BIGINT,
+        chain_id INT,
+        timestamp DATETIME,
+        value DECIMAL(30,18),
+        PRIMARY KEY (tx_hash)
+    )
+""")
+
 cursor.execute("DELETE FROM addresses")
 cursor.execute("DELETE FROM blocks")
 cursor.execute("DELETE FROM chains")
@@ -76,7 +144,6 @@ for _, row in df.iterrows():
         INSERT INTO nfts ({", ".join(df.columns)})
         VALUES ({", ".join(["%s"] * len(df.columns))})
     """
-    #address,chain_id,owner,token_id,token_uri,contract_type
     cursor.execute(sql, (
         row['address'],
         int(row['chain_id']),

@@ -69,6 +69,26 @@ def get_nft(address, token_id):
             cursor.close()
             connection.close()
 
+@nfts.route("/owned/<string:owner>", methods=['GET'])
+def get_nfts_owned(owner):
+    connection = get_db_connection()
+
+    if not connection:
+        return jsonify({"error": "Database connection failed"}), 500
+
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute(f"SELECT * FROM nfts WHERE owner = '{owner}'")
+        data = cursor.fetchall()
+        return jsonify(data), 200
+    except Error as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if connection.is_connected():
+            connection.commit()
+            cursor.close()
+            connection.close()
+
 @nfts.route("/<string:address>", methods=['DELETE'])
 def delete_nft_contract(address):
     connection = get_db_connection()

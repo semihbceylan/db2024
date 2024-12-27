@@ -20,21 +20,22 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 80px; /* Adjust based on your design */
+  height: 80px; 
   background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
   z-index: 1000;
   display: flex;
   align-items: center;
-  padding: 0 1rem;
+  justify-content: space-between; 
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .logo-container {
@@ -157,13 +158,13 @@
 .block-card {
   position: absolute;
   top: calc(100% + 0.5rem); /* Place card just below Block link */
-  left: 0;
+  left: -30%;
   background-color: #1a202c;
   padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   z-index: 2000;
-  width: 200px; /* Adjust card width based on content */
+  width: 200px; 
   color: #e2e8f0;
 }
 
@@ -222,4 +223,28 @@
 
 .block-button:hover {
   background-color: #63b3ed;
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .navbar-container {
+        justify-content: space-between;
+        padding: 0 1rem; /* Reduce padding around navbar */
+    }
+
+    .navbar-links {
+        gap: 1.5rem; /* Reduce gap between links */
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-container {
+        justify-content: space-between;
+        padding: 0 0.5rem; /* Further reduce padding */
+    }
+
+    .navbar-links {
+        gap: 1rem; /* Further reduce gap between links */
+    }
 }

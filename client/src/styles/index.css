@@ -1,10 +1,11 @@
 .page-content {
-  margin-top: 80px; /* Matches the navbar height */
-  min-height: calc(100vh - 80px); /* Subtract the navbar height */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #1c2936;
+    margin-top: 100px; /* Matches the navbar height */
+    min-height: calc(100vh - 80px); /* Ensure full height minus navbar */
+    display: flex;
+    flex-direction: column;
+    background-color: #1c2936; /* Same color as body for consistency */
+    justify-content: flex-start;
+    align-items: center;
 }
 
 @font-face {

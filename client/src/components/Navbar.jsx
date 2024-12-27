@@ -48,7 +48,7 @@ const Navbar = () => {
 		}
 	};
 
-	 return (
+	return (
 			<nav className="navbar">
 				<div className="navbar-container">
 					<NavLink to="/" className="logo-container">
@@ -56,14 +56,6 @@ const Navbar = () => {
 						<span className="project-name">DataBees</span>
 					</NavLink>
 					<div className="navbar-links">
-						<NavLink
-							to="/nft"
-							className="nav-link"
-							activeclassname="active-link"
-						>
-							<img src={nftIcon} alt="NFT Icon" className="nft-icon" />
-							NFT Page
-						</NavLink>
 						<div className="block-link-wrapper">
 							<div
 								className="nav-link block-link"
@@ -80,7 +72,6 @@ const Navbar = () => {
 											className="block-select"
 											value={selectedTable}
 											onChange={event => {
-												console.log('Selected Table:', event.target.value);
 												setSelectedTable(event.target.value);
 											}}
 										>
@@ -121,6 +112,14 @@ const Navbar = () => {
 								</div>
 							)}
 						</div>
+						<NavLink
+							to="/nft"
+							className="nav-link"
+							activeclassname="active-link"
+						>
+							<img src={nftIcon} alt="NFT Icon" className="nft-icon" />
+							NFT Page
+						</NavLink>
 					</div>
 				</div>
 			</nav>

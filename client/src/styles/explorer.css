@@ -1,0 +1,91 @@
+/* General Styling */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+    background-color: #1c2936; /* Solid background */
+    color: #fff;
+}
+
+/* Full-Page Styling */
+.block-explorer-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Fill the entire page height */
+    padding: 2rem;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 12px;
+    color: #fff;
+}
+
+/* Header Section */
+.block-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.block-title {
+    font-size: 3rem; /* Larger title */
+    font-weight: bold;
+    text-transform: uppercase;
+    background: #bffdff;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+.block-primary-key {
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-top: 0.5rem;
+    color: #3dd0cc;
+}
+
+/* Details Section */
+.block-details {
+    flex-grow: 1; /* Allows details to stretch and fill available space */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.block-detail-item {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.block-detail-key {
+    font-weight: bold;
+    text-transform: capitalize;
+    color: #c7f284;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.block-detail-value {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    word-wrap: break-word;
+    color: #7e868d;
+    text-align: center;
+}
+
+/* Footer Section (Optional for Additional Details) */
+.block-footer {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.9);
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    margin-top: 1rem;
+}

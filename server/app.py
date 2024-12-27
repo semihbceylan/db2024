@@ -1,8 +1,5 @@
-from flask import Flask, jsonify, request
+from flask import Flask
 from flask_cors import CORS
-
-from utils.get_db_connection import get_db_connection
-from mysql.connector import Error
 
 from routes.transactions import transactions
 from routes.addresses import addresses

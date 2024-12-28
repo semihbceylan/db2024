@@ -142,7 +142,7 @@ def add_address(address):
             connection.close()
 
 @addresses.route("/with-nfts/<string:address>/", methods=['POST'])
-def add_address_with_nfts(address):
+def full_add_address(address):
     connection = get_db_connection()
 
     if not connection:

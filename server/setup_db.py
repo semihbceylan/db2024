@@ -14,6 +14,7 @@ DB_CONFIG = {
     "user": os.getenv("DB_USER"),
     "password": os.getenv("DB_PASSWORD"),
     "database": os.getenv("DB_NAME"),
+    "charset": "utf8mb4"
 }
 
 connection = mysql.connector.connect(**DB_CONFIG)
@@ -363,6 +364,7 @@ def query_to_csv(table_name):
 # setup_db(cursor)
 
 # fetch(1, 2068621, cursor)
+# fetch(8453, 2068625, cursor)
 
 # fetch_nfts(cursor)
 

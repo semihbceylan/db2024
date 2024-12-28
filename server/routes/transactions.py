@@ -194,7 +194,7 @@ def add_transaction(chain_id, tx_hash):
             timestamp
         ))
 
-        return jsonify({"message": "Transaction added"}), 201
+        return jsonify({"message": "Transaction added successfully"}), 201
     except Error as e:
         return jsonify({"error": str(e)}), 500
     finally:
@@ -203,7 +203,7 @@ def add_transaction(chain_id, tx_hash):
             cursor.close()
             connection.close()
 
-@transactions.route("/with-whole_block/<int:chain_id>/<string:tx_hash>", methods=['POST'])
+@transactions.route("/full/<int:chain_id>/<string:tx_hash>", methods=['POST'])
 def full_add_transaction(chain_id, tx_hash):
     tx = evm_api.transaction.get_transaction(os.getenv("MORALIS_API_KEY"), {
         "chain": f"0x{chain_id:x}",

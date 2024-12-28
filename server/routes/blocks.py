@@ -59,7 +59,6 @@ def delete_block(chain_id, block_number):
 
 @blocks.route("/<int:chain_id>/<int:block_number>", methods=["POST"])
 def add_block(chain_id, block_number):
-    data = request.json
     connection = get_db_connection()
     if not connection:
         return jsonify({"error": "Database connection failed"}), 500
@@ -161,7 +160,6 @@ def add_block(chain_id, block_number):
 
 @blocks.route("/full/<int:chain_id>/<int:block_number>", methods=['POST'])
 def full_add_block(chain_id, block_number):
-    data = request.json
     connection = get_db_connection()
     if not connection:
         return jsonify({"error": "Database connection failed"}), 500
@@ -362,7 +360,7 @@ def full_add_block(chain_id, block_number):
 
             cursor.execute(sql, (
                 int(chain_id),
-                hash,
+                tx_hash,
                 from_address,
                 to_address,
                 int(block_number),

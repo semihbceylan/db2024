@@ -7,6 +7,7 @@ from moralis import evm_api
 from dotenv import load_dotenv
 import os
 
+from routes.blocks import add_block
 from routes.blocks import full_add_block
 
 transactions = Blueprint('transactions', __name__)
@@ -76,7 +77,7 @@ def add_transaction(chain_id, tx_hash):
         from_address = tx["from_address"]
         to_address = tx["to_address"]
         block_number = tx["block_number"]
-        timestamp = tx["timestamp"]
+        timestamp = tx["block_timestamp"]
         timestamp = f"{timestamp[:10]} {timestamp[11:19]}"
         value = tx["value"]
 
@@ -177,6 +178,85 @@ def add_transaction(chain_id, tx_hash):
             int(erc20_count),
             round(float(erc20_dollar_balance), 18),
             int(nft_count)
+        ))
+
+        block = evm_api.block.get_block(os.getenv("MORALIS_API_KEY_1"), {
+            "chain": f"0x{chain_id:x}",
+            "block_number_or_hash": f"{block_number}"
+        })
+
+        block_hash = block["hash"]
+        parent_hash = block["parent_hash"]
+        miner = block["miner"]
+        transactions = block["transactions"]
+        timestamp = block["timestamp"]
+        timestamp = f"{timestamp[:10]} {timestamp[11:19]}"
+
+        # First, we need to insert the miner address to addresses table !
+
+        cursor.execute("SELECT chain_id FROM chains")
+        chains = cursor.fetchall()
+
+        native_dollar_balance = 0
+        erc20_count = 0
+        erc20_dollar_balance = 0
+        nft_count = 0
+        
+        for chain in chains:
+            _chain_id = chain["chain_id"]
+
+            tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY_2"), {
+                "chain": f"0x{_chain_id:x}",
+                "address": miner
+            }))["result"]
+
+            for token in tokens:
+                if token["native_token"]:
+                    native_dollar_balance += float(token["usd_value"] if token["usd_value"] else 0)
+                else:
+                    erc20_count += 1
+                    erc20_dollar_balance += float(token["usd_value"] if token["usd_value"] else 0)
+
+            nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY_3"), {
+                "chain": f"0x{_chain_id:x}",
+                "format": "decimal",
+                "media_items": False,
+                "address": miner
+            }))["result"]
+
+            nft_count += len(nfts)
+
+        sql = f"""
+            INSERT INTO addresses (address, native_dollar_balance, erc20_count, erc20_dollar_balance, nft_count)
+            VALUES (%s, %s, %s, %s, %s)
+            ON DUPLICATE KEY UPDATE 
+                native_dollar_balance = VALUES(native_dollar_balance),
+                erc20_count = VALUES(erc20_count),
+                erc20_dollar_balance = VALUES(erc20_dollar_balance),
+                nft_count = VALUES(nft_count)
+        """ 
+
+        cursor.execute(sql, (
+            miner,
+            round(float(native_dollar_balance), 18),
+            int(erc20_count),
+            round(float(erc20_dollar_balance), 18),
+            int(nft_count)
+        ))
+
+        sql = f"""
+            INSERT IGNORE INTO blocks (chain_id, block_number, block_hash, parent_hash, miner, tx_count, timestamp)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """
+
+        cursor.execute(sql, (
+            int(chain_id),
+            int(block_number),
+            block_hash,
+            parent_hash,
+            miner,
+            int(len(transactions)),
+            timestamp
         ))
 
         sql = f"""

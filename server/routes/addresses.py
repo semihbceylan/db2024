@@ -184,6 +184,7 @@ def full_add_address(address):
             nft_count += len(nfts)
 
             for nft in nfts:
+                name = nft["name"]
                 contract_address = nft["token_address"]
                 token_id = nft["token_id"]
                 contract_type = nft["contract_type"]
@@ -193,8 +194,8 @@ def full_add_address(address):
                     continue
 
                 sql = f"""
-                    INSERT IGNORE INTO nfts (chain_id, contract_address, token_id, owner, contract_type)
-                    VALUES (%s, %s, %s, %s, %s)
+                    INSERT IGNORE INTO nfts (chain_id, contract_address, token_id, owner, contract_type, name)
+                    VALUES (%s, %s, %s, %s, %s, %s)
                 """
 
                 cursor.execute(sql, (
@@ -202,7 +203,8 @@ def full_add_address(address):
                     contract_address,
                     int(token_id),
                     address,
-                    contract_type
+                    contract_type,
+                    name
                 ))
 
         sql = f"""

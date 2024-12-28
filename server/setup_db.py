@@ -3,6 +3,7 @@ import os
 
 from moralis import evm_api
 import mysql.connector
+import pandas as pd
 
 load_dotenv()
 
@@ -352,8 +353,21 @@ def fetch_nfts(cursor):
 
     connection.commit()
 
+def query_to_csv(table_name):
+    cursor.execute(f"SELECT * FROM {table_name}")
+    columns = [desc[0] for desc in cursor.description]  # Sütun adlarını al
+    data = cursor.fetchall()
+    df = pd.DataFrame(data, columns=columns)
+    df.to_csv(f"./data/{table_name}.csv", index=False)
+
 # setup_db(cursor)
 
 # fetch(1, 2068621, cursor)
 
 # fetch_nfts(cursor)
+
+query_to_csv("addresses")
+query_to_csv("blocks")
+query_to_csv("chains")
+query_to_csv("nfts")
+query_to_csv("transactions")

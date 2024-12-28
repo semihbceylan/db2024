@@ -93,7 +93,7 @@ def add_address(address):
         for chain in chains:
             chain_id = chain["chain_id"]
 
-            tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY"), {
+            tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY_2"), {
                 "chain": f"0x{chain_id:x}",
                 "address": address
             }))["result"]
@@ -105,7 +105,7 @@ def add_address(address):
                     erc20_count += 1
                     erc20_dollar_balance += float(token["usd_value"] if token["usd_value"] else 0)
 
-            nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY"), {
+            nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY_3"), {
                 "chain": f"0x{chain_id:x}",
                 "format": "decimal",
                 "media_items": False,
@@ -162,7 +162,7 @@ def full_add_address(address):
         for chain in chains:
             chain_id = chain["chain_id"]
 
-            tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY"), {
+            tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY_4"), {
                 "chain": f"0x{chain_id:x}",
                 "address": address
             }))["result"]
@@ -174,7 +174,7 @@ def full_add_address(address):
                     erc20_count += 1
                     erc20_dollar_balance += float(token["usd_value"] if token["usd_value"] else 0)
 
-            nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY"), {
+            nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY_5"), {
                 "chain": f"0x{chain_id:x}",
                 "format": "decimal",
                 "media_items": False,
@@ -194,8 +194,10 @@ def full_add_address(address):
                     continue
 
                 sql = f"""
-                    INSERT IGNORE INTO nfts (chain_id, contract_address, token_id, owner, contract_type, name)
+                    INSERT INTO nfts (chain_id, contract_address, token_id, owner, contract_type, name)
                     VALUES (%s, %s, %s, %s, %s, %s)
+                    ON DUPLICATE KEY UPDATE 
+                        owner = VALUES(owner)
                 """
 
                 cursor.execute(sql, (

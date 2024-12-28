@@ -70,7 +70,7 @@ def add_block(chain_id, block_number):
         if data:
             return jsonify({"error": "Block already exists"}), 400
 
-        block = evm_api.block.get_block(os.getenv("MORALIS_API_KEY"), {
+        block = evm_api.block.get_block(os.getenv("MORALIS_API_KEY_1"), {
             "chain": f"0x{chain_id:x}",
             "block_number_or_hash": f"{block_number}"
         })
@@ -95,7 +95,7 @@ def add_block(chain_id, block_number):
         for chain in chains:
             _chain_id = chain["chain_id"]
 
-            tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY"), {
+            tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY_2"), {
                 "chain": f"0x{_chain_id:x}",
                 "address": miner
             }))["result"]
@@ -107,7 +107,7 @@ def add_block(chain_id, block_number):
                     erc20_count += 1
                     erc20_dollar_balance += float(token["usd_value"] if token["usd_value"] else 0)
 
-            nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY"), {
+            nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY_3"), {
                 "chain": f"0x{_chain_id:x}",
                 "format": "decimal",
                 "media_items": False,
@@ -171,7 +171,7 @@ def full_add_block(chain_id, block_number):
         if data:
             return jsonify({"error": "Block already exists"}), 400
 
-        block = evm_api.block.get_block(os.getenv("MORALIS_API_KEY"), {
+        block = evm_api.block.get_block(os.getenv("MORALIS_API_KEY_1"), {
             "chain": f"0x{chain_id:x}",
             "block_number_or_hash": f"{block_number}"
         })
@@ -196,7 +196,7 @@ def full_add_block(chain_id, block_number):
         for chain in chains:
             _chain_id = chain["chain_id"]
 
-            tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY"), {
+            tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY_4"), {
                 "chain": f"0x{_chain_id:x}",
                 "address": miner
             }))["result"]
@@ -208,7 +208,7 @@ def full_add_block(chain_id, block_number):
                     erc20_count += 1
                     erc20_dollar_balance += float(token["usd_value"] if token["usd_value"] else 0)
 
-            nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY"), {
+            nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY_5"), {
                 "chain": f"0x{_chain_id:x}",
                 "format": "decimal",
                 "media_items": False,
@@ -261,7 +261,7 @@ def full_add_block(chain_id, block_number):
             for chain in chains:
                 _chain_id = chain["chain_id"]
 
-                tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY"), {
+                tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY_2"), {
                     "chain": f"0x{_chain_id:x}",
                     "address": _address
                 }))["result"]
@@ -273,7 +273,7 @@ def full_add_block(chain_id, block_number):
                         erc20_count += 1
                         erc20_dollar_balance += float(token["usd_value"] if token["usd_value"] else 0)
 
-                nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY"), {
+                nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY_3"), {
                     "chain": f"0x{_chain_id:x}",
                     "format": "decimal",
                     "media_items": False,
@@ -308,7 +308,7 @@ def full_add_block(chain_id, block_number):
             for chain in chains:
                 _chain_id = chain["chain_id"]
 
-                tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY"), {
+                tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY_4"), {
                     "chain": f"0x{_chain_id:x}",
                     "address": _address
                 }))["result"]
@@ -320,7 +320,7 @@ def full_add_block(chain_id, block_number):
                         erc20_count += 1
                         erc20_dollar_balance += float(token["usd_value"] if token["usd_value"] else 0)
 
-                nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY"), {
+                nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY_5"), {
                     "chain": f"0x{_chain_id:x}",
                     "format": "decimal",
                     "media_items": False,

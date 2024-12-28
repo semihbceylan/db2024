@@ -68,7 +68,7 @@ def add_transaction(chain_id, tx_hash):
         if data:
             return jsonify({"error": "Transaction already exists"}), 400
 
-        tx = evm_api.transaction.get_transaction(os.getenv("MORALIS_API_KEY"), {
+        tx = evm_api.transaction.get_transaction(os.getenv("MORALIS_API_KEY_1"), {
             "chain": f"0x{chain_id:x}",
             "transaction_hash": tx_hash
         })
@@ -93,7 +93,7 @@ def add_transaction(chain_id, tx_hash):
         for chain in chains:
             _chain_id = chain["chain_id"]
 
-            tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY"), {
+            tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY_2"), {
                 "chain": f"0x{_chain_id:x}",
                 "address": from_address
             }))["result"]
@@ -105,7 +105,7 @@ def add_transaction(chain_id, tx_hash):
                     erc20_count += 1
                     erc20_dollar_balance += float(token["usd_value"] if token["usd_value"] else 0)
 
-            nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY"), {
+            nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY_3"), {
                 "chain": f"0x{_chain_id:x}",
                 "format": "decimal",
                 "media_items": False,
@@ -140,7 +140,7 @@ def add_transaction(chain_id, tx_hash):
         for chain in chains:
             _chain_id = chain["chain_id"]
 
-            tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY"), {
+            tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY_4"), {
                 "chain": f"0x{_chain_id:x}",
                 "address": to_address
             }))["result"]
@@ -152,7 +152,7 @@ def add_transaction(chain_id, tx_hash):
                     erc20_count += 1
                     erc20_dollar_balance += float(token["usd_value"] if token["usd_value"] else 0)
 
-            nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY"), {
+            nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY_5"), {
                 "chain": f"0x{_chain_id:x}",
                 "format": "decimal",
                 "media_items": False,
@@ -205,7 +205,7 @@ def add_transaction(chain_id, tx_hash):
 
 @transactions.route("/full/<int:chain_id>/<string:tx_hash>", methods=['POST'])
 def full_add_transaction(chain_id, tx_hash):
-    tx = evm_api.transaction.get_transaction(os.getenv("MORALIS_API_KEY"), {
+    tx = evm_api.transaction.get_transaction(os.getenv("MORALIS_API_KEY_1"), {
         "chain": f"0x{chain_id:x}",
         "transaction_hash": tx_hash
     })

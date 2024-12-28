@@ -66,7 +66,7 @@ def delete_chain(chain_id):
             for chain in chains:
                 _chain_id = chain["chain_id"]
 
-                tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY"), {
+                tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY_1"), {
                     "chain": f"0x{_chain_id:x}",
                     "address": address
                 }))["result"]
@@ -78,7 +78,7 @@ def delete_chain(chain_id):
                         erc20_count += 1
                         erc20_dollar_balance += float(token["usd_value"] if token["usd_value"] else 0)
 
-                nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY"), {
+                nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY_1"), {
                     "chain": f"0x{_chain_id:x}",
                     "format": "decimal",
                     "media_items": False,

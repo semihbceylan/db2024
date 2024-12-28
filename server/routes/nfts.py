@@ -149,7 +149,7 @@ def add_nft_contract(chain_id, contract_address):
     try:
         cursor = connection.cursor(dictionary=True)
         
-        nfts= (evm_api.nft.get_contract_nfts(os.getenv("MORALIS_API_KEY"), {
+        nfts= (evm_api.nft.get_contract_nfts(os.getenv("MORALIS_API_KEY_1"), {
             "chain": f"0x{chain_id:x}",
             "format": "decimal",
             "address": contract_address
@@ -174,7 +174,7 @@ def add_nft_contract(chain_id, contract_address):
             for chain in chains:
                 _chain_id = chain["chain_id"]
 
-                tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY"), {
+                tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY_2"), {
                     "chain": f"0x{_chain_id:x}",
                     "address": owner
                 }))["result"]
@@ -186,7 +186,7 @@ def add_nft_contract(chain_id, contract_address):
                         erc20_count += 1
                         erc20_dollar_balance += float(token["usd_value"] if token["usd_value"] else 0)
 
-                nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY"), {
+                nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY_3"), {
                     "chain": f"0x{_chain_id:x}",
                     "format": "decimal",
                     "media_items": False,
@@ -247,7 +247,7 @@ def add_nft(chain_id, contract_address, token_id):
     try:
         cursor = connection.cursor(dictionary=True)
         
-        nfts= (evm_api.nft.get_contract_nfts(os.getenv("MORALIS_API_KEY"), {
+        nfts= (evm_api.nft.get_contract_nfts(os.getenv("MORALIS_API_KEY_1"), {
             "chain": f"0x{chain_id:x}",
             "format": "decimal",
             "address": contract_address
@@ -275,7 +275,7 @@ def add_nft(chain_id, contract_address, token_id):
             for chain in chains:
                 _chain_id = chain["chain_id"]
 
-                tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY"), {
+                tokens = (evm_api.wallets.get_wallet_token_balances_price(os.getenv("MORALIS_API_KEY_4"), {
                     "chain": f"0x{_chain_id:x}",
                     "address": owner
                 }))["result"]
@@ -287,7 +287,7 @@ def add_nft(chain_id, contract_address, token_id):
                         erc20_count += 1
                         erc20_dollar_balance += float(token["usd_value"] if token["usd_value"] else 0)
 
-                nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY"), {
+                nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY_5"), {
                     "chain": f"0x{_chain_id:x}",
                     "format": "decimal",
                     "media_items": False,
@@ -332,6 +332,69 @@ def add_nft(chain_id, contract_address, token_id):
 
             break
         return jsonify({"message": "NFT contract added"}), 201
+    except Error as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if connection.is_connected():
+            connection.commit()
+            cursor.close()
+            connection.close()
+
+@nfts.route("/", methods=['POST'])
+def all_nfts():
+    connection = get_db_connection()
+
+    if not connection:
+        return jsonify({"error": "Database connection failed"}), 500
+
+    try:
+        cursor = connection.cursor(dictionary=True)
+
+        cursor.execute("SELECT address FROM addresses")
+        addresses = cursor.fetchall()
+
+        cursor.execute("SELECT chain_id FROM chains")
+        chains = cursor.fetchall()
+
+        for address in addresses:
+            address = address["address"]
+
+            for chain in chains:
+                chain_id = chain["chain_id"]
+
+                nfts = (evm_api.nft.get_wallet_nfts(os.getenv("MORALIS_API_KEY_1"), {
+                    "chain": f"0x{chain_id:x}",
+                    "format": "decimal",
+                    "media_items": False,
+                    "address": address
+                }))["result"]
+
+                for nft in nfts:
+                    name = nft["name"]
+                    contract_address = nft["token_address"]
+                    token_id = nft["token_id"]
+                    contract_type = nft["contract_type"]
+
+                    if int(token_id) > 2**64 - 1: # token_id is too large to store in a BIGINT
+                        continue
+
+                    sql = f"""
+                        INSERT INTO nfts (chain_id, contract_address, token_id, owner, contract_type, name)
+                        VALUES (%s, %s, %s, %s, %s, %s)
+                        ON DUPLICATE KEY UPDATE
+                            owner = VALUES(owner)
+                    """
+
+                    cursor.execute(sql, (
+                        int(chain_id),
+                        contract_address,
+                        int(token_id),
+                        address,
+                        contract_type,
+                        name
+                    ))
+
+        return jsonify({"message": "NFTs reloaded"}), 201
     except Error as e:
         return jsonify({"error": str(e)}), 500
     finally:

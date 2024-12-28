@@ -7,7 +7,6 @@ from moralis import evm_api
 from dotenv import load_dotenv
 import os
 
-
 blocks = Blueprint('blocks', __name__)
 
 @blocks.route("/<int:chain_id>/<int:block_number>", methods=['GET'])
@@ -160,7 +159,7 @@ def add_block(chain_id, block_number):
             cursor.close()
             connection.close()
 
-@blocks.route("/full/<int:chain_id>/<int:block_number>", methods=['PUT'])
+@blocks.route("/full/<int:chain_id>/<int:block_number>", methods=['POST'])
 def full_add_block(chain_id, block_number):
     data = request.json
     connection = get_db_connection()

@@ -93,7 +93,7 @@ def get_nfts_owned(owner):
             cursor.close()
             connection.close()
 
-@nfts.route("/contract/<int:chain_id>/<string:contract_address>", methods=['DELETE'])
+@nfts.route("/<int:chain_id>/<string:contract_address>", methods=['DELETE'])
 def delete_nft_contract(chain_id, contract_address):
     connection = get_db_connection()
 
@@ -118,7 +118,7 @@ def delete_nft_contract(chain_id, contract_address):
             cursor.close()
             connection.close()
 
-@nfts.route("/nft/<int:chain_id>/<string:contract_address>/<int:token_id>", methods=['DELETE'])
+@nfts.route("/<int:chain_id>/<string:contract_address>/<int:token_id>", methods=['DELETE'])
 def delete_nft(chain_id, contract_address, token_id):
     connection = get_db_connection()
 
@@ -139,7 +139,7 @@ def delete_nft(chain_id, contract_address, token_id):
             cursor.close()
             connection.close()
 
-@nfts.route("/contract/<int:chain_id>/<string:contract_address>", methods=['POST'])
+@nfts.route("/<int:chain_id>/<string:contract_address>", methods=['POST'])
 def add_nft_contract(chain_id, contract_address):
     connection = get_db_connection()
 
@@ -215,19 +215,20 @@ def add_nft_contract(chain_id, contract_address):
 
             sql = f"""
                 INSERT INTO nfts (chain_id, contract_address, token_id, owner, contract_type, name) 
-                VALUES ({chain_id}, '{contract_address}', {token_id}, '{owner}', '{contract_type}', '{name}')
+                VALUES (%s, %s, %s, %s, %s, %s)
                 ON DUPLICATE KEY UPDATE
-                    owner = VALUES(owner),
+                    owner = VALUES(owner)
             """ # Other values cannot change
 
             cursor.execute(sql, (
-                int(chain_id), 
-                contract_address, 
-                int(token_id), 
-                owner, 
-                contract_type, 
-                name    
+                int(chain_id),
+                contract_address,
+                int(token_id),
+                owner,
+                contract_type,
+                name
             ))
+
         return jsonify({"message": "NFT contract added"}), 201
     except Error as e:
         return jsonify({"error": str(e)}), 500
@@ -237,7 +238,7 @@ def add_nft_contract(chain_id, contract_address):
             cursor.close()
             connection.close()
 
-@nfts.route("/nft/<int:chain_id>/<string:contract_address>/<int:token_id>", methods=['POST'])
+@nfts.route("/<int:chain_id>/<string:contract_address>/<int:token_id>", methods=['POST'])
 def add_nft(chain_id, contract_address, token_id):
     connection = get_db_connection()
 
@@ -316,22 +317,22 @@ def add_nft(chain_id, contract_address, token_id):
 
             sql = f"""
                 INSERT INTO nfts (chain_id, contract_address, token_id, owner, contract_type, name) 
-                VALUES ({chain_id}, '{contract_address}', {_token_id}, '{owner}', '{contract_type}', '{name}')
+                VALUES (%s, %s, %s, %s, %s, %s)
                 ON DUPLICATE KEY UPDATE
-                    owner = VALUES(owner),
+                    owner = VALUES(owner)
             """ # Other values cannot change
 
             cursor.execute(sql, (
-                int(chain_id), 
-                contract_address, 
-                int(_token_id), 
-                owner, 
-                contract_type, 
-                name    
+                int(chain_id),
+                contract_address,
+                int(token_id),
+                owner,
+                contract_type,
+                name
             ))
 
             break
-        return jsonify({"message": "NFT contract added"}), 201
+        return jsonify({"message": "NFT added/updated"}), 201
     except Error as e:
         return jsonify({"error": str(e)}), 500
     finally:

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import logo from '../assets/logo.png'; 
+import logo from '../assets/logo.png';
 import '../styles/navbar.css';
 import nftIcon from '../assets/nft.png'; 
 import blockIcon from '../assets/blocks.png';

@@ -40,9 +40,19 @@ def delete_address(address):
 
     try:
         cursor = connection.cursor(dictionary=True)
-        cursor.execute(f"DELETE FROM addresses WHERE address = '{address}'")
-        if cursor.rowcount == 0:
+        cursor.execute(f"SELECT * FROM addresses WHERE address = '{address}'")
+        if not cursor.fetchone():
             return jsonify({"error": "Address not found"}), 404
+
+        blocks_deleted = 0
+        transactions_deleted = 0
+
+        cursor.execute(f"DELETE FROM nfts WHERE owner = '{address}'")
+        nfts_deleted = cursor.rowcount
+
+        cursor.execute(f"DELETE FROM transactions WHERE from_address = '{address}' OR to_address = '{address}'")
+        transactions_deleted += cursor.rowcount
+
         cursor.execute(f"SELECT block_number, chain_id FROM blocks WHERE miner = '{address}'")
         blocks_to_delete = cursor.fetchall()
         blocks_deleted = 0
@@ -54,10 +64,9 @@ def delete_address(address):
             transactions_deleted += cursor.rowcount
             cursor.execute(f"DELETE FROM blocks WHERE chain_id = {chain_id} AND block_number = {block_number}")
             blocks_deleted += cursor.rowcount
-        cursor.execute(f"DELETE FROM transactions WHERE from_address = '{address}' OR to_address = '{address}'")
-        transactions_deleted += cursor.rowcount
-        cursor.execute(f"DELETE FROM nfts WHERE owner = '{address}'")
-        nfts_deleted = cursor.rowcount
+
+        cursor.execute(f"DELETE FROM addresses WHERE address = '{address}'")
+
         return jsonify({
             "message": "Address and related data deleted successfully",
             "blocks_deleted": blocks_deleted,

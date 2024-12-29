@@ -4,6 +4,8 @@ import axios from '../utils/axiosConfig';
 import Navbar from '../components/Navbar';
 import "../styles/admin.css";
 
+import authenticate from '../utils/authenticate';
+
 export default function Admin() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [selectedTable, setSelectedTable] = useState("");
@@ -530,7 +532,7 @@ export default function Admin() {
             <div className='page-content'>
                 <button
                     className="authentication"
-                    onClick={() => setIsAuthenticated(true)}
+                    onClick={async () => {setIsAuthenticated(await authenticate());}}
                 >
                     Authenticate
                 </button>

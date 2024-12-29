@@ -356,17 +356,17 @@ def fetch_nfts(cursor):
 
 def query_to_csv(table_name):
     cursor.execute(f"SELECT * FROM {table_name}")
-    columns = [desc[0] for desc in cursor.description]  # Sütun adlarını al
+    columns = [desc[0] for desc in cursor.description]
     data = cursor.fetchall()
     df = pd.DataFrame(data, columns=columns)
     df.to_csv(f"./data/{table_name}.csv", index=False)
 
-# setup_db(cursor)
+setup_db(cursor)
 
-# fetch(1, 2068621, cursor)
-# fetch(8453, 2068625, cursor)
+fetch(1, 2068621, cursor)
+fetch(8453, 2068625, cursor)
 
-# fetch_nfts(cursor)
+fetch_nfts(cursor)
 
 query_to_csv("addresses")
 query_to_csv("blocks")

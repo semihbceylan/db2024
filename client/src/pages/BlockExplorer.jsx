@@ -5,20 +5,6 @@ import Navbar from '../components/Navbar';
 import '../styles/index.css';
 import '../styles/explorer.css';
 
-const TEST_DATA = {
-	tableName: 'blocks',
-	primaryKey: [53565, 53566, 53567],
-	block_number: 2068621,
-	chain_id: 1,
-	block_hash:
-		'0x1f3211e19dbbfc7cfbd995053ca85a92c6f0b5f01c3fb9275577b1e0dc53cfe7',
-	parent_hash:
-		'0x76d520ebc07ad89932eb8f404f2afa30e3e832ff1819102f392f6e083c634cc3',
-	miner: '0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8',
-	transaction_count: 7,
-	timestamp: '2016-08-14 05:30:06',
-};
-
 export default function BlockExplorer() {
 	const { tableName, primaryKey } = useParams();
 
@@ -26,8 +12,8 @@ export default function BlockExplorer() {
 
 	useEffect(() => {
 		(async () => {
-			// const response = await axios.get(`/api/takeData/${tableName}/${primaryKey}`);
-			// setData(response.data);
+			const response = await axios.get(`/api/${tableName}/${primaryKey}`);
+			setData(response.data);
 			setData(TEST_DATA);
 		})();
 	}, [primaryKey]);

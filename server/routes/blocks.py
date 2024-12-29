@@ -166,10 +166,6 @@ def full_add_block(chain_id, block_number):
 
     try:
         cursor = connection.cursor(dictionary=True)
-        cursor.execute(f"SELECT * FROM blocks WHERE chain_id = {chain_id} AND block_number = {block_number}")
-        data = cursor.fetchone()
-        if data:
-            return jsonify({"error": "Block already exists"}), 400
 
         block = evm_api.block.get_block(os.getenv("MORALIS_API_KEY_1"), {
             "chain": f"0x{chain_id:x}",
@@ -236,7 +232,7 @@ def full_add_block(chain_id, block_number):
         ))
 
         sql = f"""
-            INSERT INTO blocks (chain_id, block_number, block_hash, parent_hash, miner, tx_count, timestamp)
+            INSERT IGNORE INTO blocks (chain_id, block_number, block_hash, parent_hash, miner, tx_count, timestamp)
             VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
 
@@ -354,7 +350,7 @@ def full_add_block(chain_id, block_number):
 
             # It is impossible the duplicate case for transactions, so we can directly insert the transaction
             sql = f"""
-                INSERT INTO transactions (chain_id, tx_hash, from_address, to_address, block_number, value, timestamp)
+                INSERT IGNORE INTO transactions (chain_id, tx_hash, from_address, to_address, block_number, value, timestamp)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
             """
 

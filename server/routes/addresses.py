@@ -159,6 +159,7 @@ def full_add_address(address):
         cursor.execute("SELECT chain_id FROM chains")
         chains = cursor.fetchall()
         
+        owned_nfts = []
         for chain in chains:
             chain_id = chain["chain_id"]
 
@@ -182,32 +183,7 @@ def full_add_address(address):
             }))["result"]
 
             nft_count += len(nfts)
-
-            for nft in nfts:
-                name = nft["name"]
-                contract_address = nft["token_address"]
-                token_id = nft["token_id"]
-                contract_type = nft["contract_type"]
-
-                if int(token_id) > 2**64 - 1: # token_id is too large to store in a BIGINT
-                    nft_count -= 1
-                    continue
-
-                sql = f"""
-                    INSERT INTO nfts (chain_id, contract_address, token_id, owner, contract_type, name)
-                    VALUES (%s, %s, %s, %s, %s, %s)
-                    ON DUPLICATE KEY UPDATE 
-                        owner = VALUES(owner)
-                """
-
-                cursor.execute(sql, (
-                    int(chain_id),
-                    contract_address,
-                    int(token_id),
-                    address,
-                    contract_type,
-                    name if name else "NO NAME NFT"
-                ))
+            owned_nfts.extend(nfts)
 
         sql = f"""
             INSERT INTO addresses (address, native_dollar_balance, erc20_count, erc20_dollar_balance, nft_count)
@@ -226,6 +202,32 @@ def full_add_address(address):
             round(float(erc20_dollar_balance), 18),
             int(nft_count)
         ))
+
+        for nft in owned_nfts:
+            name = nft["name"]
+            contract_address = nft["token_address"]
+            token_id = nft["token_id"]
+            contract_type = nft["contract_type"]
+
+            if int(token_id) > 2**64 - 1: # token_id is too large to store in a BIGINT
+                nft_count -= 1
+                continue
+
+            sql = f"""
+                INSERT INTO nfts (chain_id, contract_address, token_id, owner, contract_type, name)
+                VALUES (%s, %s, %s, %s, %s, %s)
+                ON DUPLICATE KEY UPDATE 
+                    owner = VALUES(owner)
+            """
+
+            cursor.execute(sql, (
+                int(chain_id),
+                contract_address,
+                int(token_id),
+                address,
+                contract_type,
+                name if name else "NO NAME NFT"
+            ))
 
         return jsonify({"message": "Address added/updated and owned nfts added successfully"}), 201
     except Error as e:

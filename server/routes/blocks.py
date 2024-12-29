@@ -383,3 +383,33 @@ def full_add_block(chain_id, block_number):
             connection.commit()
             cursor.close()
             connection.close()
+
+@blocks.route("/latest-blocks-for-each-chain", methods=['GET'])
+def latest_blocks_for_each_chain():
+    connection = get_db_connection()
+
+    if not connection:
+        return jsonify({"error": "Database connection failed"}), 500
+
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT b.*
+            FROM blocks b
+            JOIN (
+                SELECT chain_id, MAX(block_number) as latest_block_number
+                FROM blocks
+                GROUP BY chain_id
+            ) latest_blocks
+            ON b.chain_id = latest_blocks.chain_id AND b.block_number = latest_blocks.latest_block_number
+        """)
+
+        data = cursor.fetchall()
+        return jsonify(data), 200
+    except Error as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if connection.is_connected():
+            connection.commit()
+            cursor.close()
+            connection.close()

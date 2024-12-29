@@ -40,11 +40,13 @@ def delete_block(chain_id, block_number):
 
     try:
         cursor = connection.cursor(dictionary=True)
-        cursor.execute(f"DELETE FROM blocks WHERE chain_id = {chain_id} AND block_number = {block_number}")
-        if cursor.rowcount == 0:
+        cursor.execute(f"SELECT * FROM blocks WHERE chain_id = {chain_id} AND block_number = {block_number}")
+        data = cursor.fetchone()
+        if not data:
             return jsonify({"error": "Block not found"}), 404
         cursor.execute(f"DELETE FROM transactions WHERE chain_id = {chain_id} AND block_number = {block_number}")
         transactions_deleted = cursor.rowcount
+        cursor.execute(f"DELETE FROM blocks WHERE chain_id = {chain_id} AND block_number = {block_number}")
         return jsonify({
             "message": "BLock and related data deleted successfully",
             "transactions_deleted": transactions_deleted,

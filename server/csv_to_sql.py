@@ -136,6 +136,7 @@ for _, row in df.iterrows():
         INSERT INTO nfts ({", ".join(df.columns)})
         VALUES ({", ".join(["%s"] * len(df.columns))})
     """
+    
     cursor.execute(sql, (
         int(row['chain_id']),
         row['contract_address'],

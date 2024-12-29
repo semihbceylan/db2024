@@ -206,7 +206,7 @@ def full_add_address(address):
                     int(token_id),
                     address,
                     contract_type,
-                    name
+                    name if name else "NO NAME NFT"
                 ))
 
         sql = f"""

@@ -226,7 +226,7 @@ def add_nft_contract(chain_id, contract_address):
                 int(token_id),
                 owner,
                 contract_type,
-                name
+                name if name else "NO NAME NFT"
             ))
 
         return jsonify({"message": "NFT contract added"}), 201
@@ -328,7 +328,7 @@ def add_nft(chain_id, contract_address, token_id):
                 int(token_id),
                 owner,
                 contract_type,
-                name
+                name if name else "NO NAME NFT"
             ))
 
             break
@@ -392,7 +392,7 @@ def all_nfts():
                         int(token_id),
                         address,
                         contract_type,
-                        name
+                        name if name else "NO NAME NFT"
                     ))
 
         return jsonify({"message": "NFTs reloaded"}), 201

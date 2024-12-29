@@ -349,7 +349,7 @@ def fetch_nfts(cursor):
                     int(token_id),
                     address,
                     contract_type,
-                    name
+                    name if name else "NO NAME NFT"
                 ))
 
     connection.commit()

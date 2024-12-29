@@ -38,17 +38,21 @@ def delete_chain(chain_id):
 
     try:
         cursor = connection.cursor(dictionary=True)
-        cursor.execute(f"DELETE FROM chains WHERE chain_id = {chain_id}")
-        if cursor.rowcount == 0:
+
+        cursor.execute(f"SELECT * FROM chains WHERE chain_id = {chain_id}")
+        chain = cursor.fetchone()
+        if not chain:
             return jsonify({"error": "Chain not found"}), 404
-        cursor.execute(f"DELETE FROM blocks WHERE chain_id = {chain_id}")
-        blocks_deleted = cursor.rowcount
-        cursor.execute(f"DELETE FROM transactions WHERE chain_id = {chain_id}")
-        transactions_deleted = cursor.rowcount
+        
         cursor.execute(f"DELETE FROM nfts WHERE chain_id = {chain_id}")
         nfts_deleted = cursor.rowcount
+        cursor.execute(f"DELETE FROM transactions WHERE chain_id = {chain_id}")
+        transactions_deleted = cursor.rowcount
+        cursor.execute(f"DELETE FROM blocks WHERE chain_id = {chain_id}")
+        blocks_deleted = cursor.rowcount
+        cursor.execute(f"DELETE FROM chains WHERE chain_id = {chain_id}")
         connection.commit()
-        
+
         cursor.execute("SELECT address FROM addresses")
         addresses = cursor.fetchall()
 

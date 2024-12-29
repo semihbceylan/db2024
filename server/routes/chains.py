@@ -170,9 +170,10 @@ def edit_chain(chain_id):
     try:
         cursor = connection.cursor(dictionary=True)
         cursor.execute(f"SELECT * FROM chains WHERE chain_id = {chain_id}")
-        data = cursor.fetchone()
-        if not data:
+        chain = cursor.fetchone()
+        if not chain:
             return jsonify({"error": "Chain doesn't exists"}), 400
+        print(data["chain_name"], data["native_currency"], data["explorer_url"], data["rpc_url"], chain_id)
         query = "UPDATE chains SET chain_name = %s, native_currency = %s, explorer_url = %s, rpc_url = %s WHERE chain_id = %s"
         values = (data["chain_name"], data["native_currency"], data["explorer_url"], data["rpc_url"], chain_id)
         cursor.execute(query, values)

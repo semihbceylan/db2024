@@ -148,6 +148,10 @@ def add_nft_contract(chain_id, contract_address):
 
     try:
         cursor = connection.cursor(dictionary=True)
+        cursor.execute(f"SELECT * FROM chains WHERE chain_id = {chain_id}")
+        chain = cursor.fetchone()
+        if not chain:
+            return jsonify({"error": "Chain not found"}), 404
         
         nfts= (evm_api.nft.get_contract_nfts(os.getenv("MORALIS_API_KEY_1"), {
             "chain": f"0x{chain_id:x}",
@@ -247,6 +251,10 @@ def add_nft(chain_id, contract_address, token_id):
 
     try:
         cursor = connection.cursor(dictionary=True)
+        cursor.execute(f"SELECT * FROM chains WHERE chain_id = {chain_id}")
+        chain = cursor.fetchone()
+        if not chain:
+            return jsonify({"error": "Chain not found"}), 404
         
         nfts= (evm_api.nft.get_contract_nfts(os.getenv("MORALIS_API_KEY_1"), {
             "chain": f"0x{chain_id:x}",

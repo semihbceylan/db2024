@@ -67,10 +67,15 @@ def add_block(chain_id, block_number):
 
     try:
         cursor = connection.cursor(dictionary=True)
+        cursor.execute(f"SELECT * FROM chains WHERE chain_id = {chain_id}")
+        chain = cursor.fetchone()
+        if not chain:
+            return jsonify({"error": "Chain not found"}), 404
         cursor.execute(f"SELECT * FROM blocks WHERE chain_id = {chain_id} AND block_number = {block_number}")
         data = cursor.fetchone()
         if data:
             return jsonify({"error": "Block already exists"}), 400
+
 
         block = evm_api.block.get_block(os.getenv("MORALIS_API_KEY_1"), {
             "chain": f"0x{chain_id:x}",
@@ -168,6 +173,10 @@ def full_add_block(chain_id, block_number):
 
     try:
         cursor = connection.cursor(dictionary=True)
+        cursor.execute(f"SELECT * FROM chains WHERE chain_id = {chain_id}")
+        chain = cursor.fetchone()
+        if not chain:
+            return jsonify({"error": "Chain not found"}), 404
 
         block = evm_api.block.get_block(os.getenv("MORALIS_API_KEY_1"), {
             "chain": f"0x{chain_id:x}",

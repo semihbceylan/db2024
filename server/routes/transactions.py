@@ -64,7 +64,12 @@ def add_transaction(chain_id, tx_hash):
 
     try:
         cursor = connection.cursor(dictionary=True)
-        cursor.execute(f"SELECT * FROM transactions WHERE tx_hash = '{tx_hash}'")
+        cursor.execute(f"SELECT * FROM chains WHERE chain_id = {chain_id}")
+        chain = cursor.fetchone()
+        if not chain:
+            return jsonify({"error": "Chain not found"}), 404
+        
+        cursor.execute(f"SELECT * FROM transactions WHERE chain_id = {chain_id} AND tx_hash = '{tx_hash}'")
         data = cursor.fetchone()
         if data:
             return jsonify({"error": "Transaction already exists"}), 400
@@ -298,6 +303,11 @@ def full_add_transaction(chain_id, tx_hash):
 
     try:
         cursor = connection.cursor(dictionary=True)
+        cursor.execute(f"SELECT * FROM chains WHERE chain_id = {chain_id}")
+        chain = cursor.fetchone()
+        if not chain:
+            return jsonify({"error": "Chain not found"}), 404
+
         block = evm_api.block.get_block(os.getenv("MORALIS_API_KEY_1"), {
             "chain": f"0x{chain_id:x}",
             "block_number_or_hash": f"{block_number}"

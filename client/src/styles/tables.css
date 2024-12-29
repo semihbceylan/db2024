@@ -1,0 +1,51 @@
+.table-container {
+    background-color: #7fffd4;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 10px;
+    width: 100%;
+  }
+  
+  .table-header {
+    background-color: #7fffd4;
+    padding: 15px;
+    border-radius: 8px 8px 0 0;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .table-row {
+    display: flex;
+    align-items: center;
+    background-color: #ffb347;
+    padding: 15px;
+    margin: 5px 0;
+    border-radius: 8px;
+  }
+  
+  .icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+  }
+  
+  .block-info {
+    flex: 1;
+  }
+  
+  .timestamp {
+    margin-left: auto;
+  }
+  
+  .address {
+    color: #333;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .transaction-count {
+    color: #666;
+    font-size: 14px;
+  }
+  
+  

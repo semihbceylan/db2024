@@ -1,0 +1,78 @@
+.chain-viewer-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section {
+  flex: 1;
+  background-color: #7fffd4;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.section-header {
+  padding: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+}
+
+.section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 20px 20px;
+}
+
+.block-row {
+  display: flex;
+  align-items: center;
+  background-color: #ffb347;
+  padding: 16px;
+  border-radius: 8px;
+  gap: 16px;
+}
+
+.icon-container {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.block-details {
+  flex: 1;
+}
+
+.block-number {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.block-info {
+  font-size: 14px;
+}
+
+.block-miner {
+  color: #333;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.transaction-count {
+  color: #555;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+.timestamp {
+  color: #333;
+  font-size: 14px;
+  white-space: nowrap;
+}
+

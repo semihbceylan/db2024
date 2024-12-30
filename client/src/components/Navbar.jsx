@@ -133,7 +133,7 @@ const Navbar = () => {
             )}
           </div>
           <NavLink
-            to="/nft"
+            to="/nfts"
             className="nav-link"
             activeclassname="active-link"
           >

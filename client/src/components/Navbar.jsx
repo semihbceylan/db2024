@@ -85,7 +85,7 @@ const Navbar = () => {
             </div>
             {showCard && (
               <div className="block-card">
-                <h3>Query a {tableNameSingular}</h3>
+                <h3>QUERY {tableNameSingular}</h3>
                 <div className="selections">
                   <select
                     className="block-select"

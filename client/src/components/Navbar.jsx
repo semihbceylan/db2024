@@ -4,6 +4,7 @@ import logo from '../assets/logo.png';
 import '../styles/navbar.css';
 import nftIcon from '../assets/nft.png';
 import blockIcon from '../assets/blocks.png';
+import axios from '../utils/axiosConfig';
 
 const Navbar = () => {
   const [showCard, setShowCard] = useState(false);
@@ -14,17 +15,19 @@ const Navbar = () => {
   const [selectedChain, setSelectedChain] = useState('');
 
   useEffect(() => {
-    (async () => {
-      // Fetch the chain data from your API
-      // const response = await axios.get("/api/takeChains");
-      // setChains(response.data);
-      // For now, we'll use mocked data
-      setChains([
-        { id: 1, name: 'Chain 1' },
-        { id: 2, name: 'Chain 2' },
-        { id: 3, name: 'Chain 3' },
-      ]);
-    })();
+	(async () => {
+	  try {
+		const response = await axios.get('api/chains');
+		// Transform the data into the format needed for the dropdown
+		const formattedChains = response.data.map((chain) => ({
+		  id: chain.chain_id,
+		  name: chain.chain_name,
+		}));
+		setChains(formattedChains);
+	  } catch (error) {
+		console.error('Error fetching chains:', error);
+	  }
+	})();
   }, []);
 
   const handleQuery = () => {

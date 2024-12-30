@@ -1,5 +1,5 @@
 .page-content {
-    margin-top: 100px; /* Matches the navbar height */
+    margin-top: 80px; /* Matches the navbar height */
     min-height: calc(100vh - 80px); /* Ensure full height minus navbar */
     display: flex;
     flex-direction: column;

@@ -2,11 +2,12 @@
 .content-container {
   display: flex;
   min-height: 80vh;
+  margin: 0;
 }
 
 .left-section {
   flex: 1;
-  background-color: #3e6b4d;
+  background-color: #ffffff;
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -40,7 +41,7 @@
 
 .right-section {
   flex: 1;
-  background-color: #ff0000;
+  background-color: #002e6d;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -6,16 +6,7 @@ function LeftSection() {
   return (
     <div className="left-section">
       <div className="text-content">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In malesuada
-        euismod aliquam. Suspendisse et purus at felis tincidunt rhoncus. Proin
-        sagittis quis ipsum eu laoreet. Quisque in laoreet arcu. Suspendisse
-        eget placerat magna. Quisque in vehicula ante. Donec condimentum est sit
-        amet lectus luctus tempus. Pellentesque habitant morbi tristique
-        senectus et netus et malesuada fames ac turpis egestas. Nullam vel
-        luctus eros, ut ultricies magna. Lorem ipsum dolor sit amet, consectetur
-        adipiscing elit. Nulla facilisis ipsum justo, eu sagittis sapien aliquet
-        gravida. Aliquam blandit justo ligula, eu viverra enim venenatis eu.
-        Pellentesque egestas fringilla enim sit amet lacinia.
+	  Databees is a multichain block explorer that operates on SQL. Unlike standard block explorers, it keeps a portion of data cached, significantly enhancing search performance. If the search parameters fall within the cached data, Databees can deliver results without querying the blockchain directly, enabling faster responses to users.
       </div>
       <div className="icons-container">
         <IconCircle color="#1a2b3c">M</IconCircle>
@@ -63,7 +54,7 @@ export default function Sections() {
   return (
     <div className="sections">
       <LeftSection />
-      <RightSection />
+      {/*<RightSection />*/}
     </div>
   )
 }

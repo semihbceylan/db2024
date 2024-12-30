@@ -63,7 +63,6 @@
 
 .logo-container:hover .project-name,
 .logo-container:hover .logo-image {
-  transform: scale(1.1);
   color: #4fd1c5;
 }
 
